@@ -1,0 +1,353 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+        <mat-step [stepControl]="addPassengersForm">
+                <form [formGroup]="addPassengersForm">
+                        <ng-template matStepLabel>Fill the fields</ng-template>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                Origin
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <mat-form-field>
+                                                        <mat-label>Origin City</mat-label>
+                                                        <mat-select formControlName="origin">
+                                                                <mat-option *ngFor="let city of flights"
+                                                                        [value]="city.flightorigin">
+                                                                        {{city.flightorigin}}
+                                                                </mat-option>
+                                                        </mat-select>
+                                                </mat-form-field>
+
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                Destination
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <mat-form-field>
+                                                        <mat-label>Destination City</mat-label>
+                                                        <mat-select formControlName="dest">
+                                                                <mat-option *ngFor="let city of flights"
+                                                                        [value]="city.flightdest">
+                                                                        {{city.flightdest}}
+                                                                </mat-option>
+                                                        </mat-select>
+                                                </mat-form-field>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                Date of Boarding
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <p-calendar [touchUI]="true" [readonlyInput]="true"
+                                                        formControlName="date" dateFormat="dd/mm/yy" [minDate]="minDate"
+                                                        [maxDate]="maxDate" showButtonBar="true">
+                                                </p-calendar>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                Number of Adults
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <p-spinner formControlName="adultCount" [min]="1" [max]="100">
+                                                </p-spinner>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                Number of Infants
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <p-spinner formControlName="infantCount" [min]="0" [max]="100">
+                                                </p-spinner>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                </div>
+                                <div class="ui-g-12 ui-md-6">
+                                        <button mat-raised-button color="primary" [disabled]="!addPassengersForm.valid"
+                                                (click)="SearchFlights(stepper)">Search</button>
+                                </div>
+
+                        </div>
+                        <div class="ui-g">
+                                <div class="ui-g-12 ui-md-6">
+                                        <div class="ui-g-5">
+                                                <button mat-raised-button matStepperNext color="primary"
+                                                        [disabled]="!searchCick">Next</button>
+                                        </div>
+                                        <div class="ui-g-7">
+                                                <button mat-raised-button color="warn"
+                                                        (click)="ResetForm()">Reset</button>
+                                        </div>
+                                </div>
+                        </div>
+                </form>
+        </mat-step>
+        <mat-step>
+                <form>
+                        <ng-template matStepLabel>List of Flights</ng-template>
+
+                        <div *ngIf="this.passengerFlights.length>0; else Else">
+                                <!-- =========================Displaying Flights Based on Search=========================== -->
+
+                                <p-table [columns]="cols" [value]="passengerFlights" dataKey="flightnumber">
+                                        <ng-template pTemplate="header" let-columns>
+                                                <tr>
+                                                        <th style="width: 3em"></th>
+                                                        <th *ngFor="let col of columns">
+                                                                {{col.header}}
+                                                        </th>
+                                                </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-rowData let-expanded="expanded"
+                                                let-columns="columns">
+                                                <tr>
+                                                        <td>
+                                                                <a href="#" [pRowToggler]="rowData">
+                                                                        <i
+                                                                                [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                                                                </a>
+                                                        </td>
+                                                        <td *ngFor="let col of columns">
+                                                                {{rowData[col.field]}}
+                                                        </td>
+                                                </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+                                                <tr>
+                                                        <td [attr.colspan]="columns.length + 1">
+                                                                <div class="ui-g ui-fluid"
+                                                                        style="font-size:16px;padding:20px">
+                                                                        <div class="ui-g-12 ui-md-5"
+                                                                                style="text-align:center">
+                                                                                <img [attr.alt]="rowData.brand"
+                                                                                        src="data:image/jpeg;base64,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">
+                                                                        </div>
+                                                                        <div class="ui-g-12 ui-md-5">
+                                                                                <div class="ui-g">
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>Name:</b>
+                                                                                                {{rowData.flightname}}
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>From:</b>
+                                                                                                {{rowData.source}}
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>To:</b>
+                                                                                                {{rowData.destination}}
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>Departure:</b>
+                                                                                                {{rowData.departTime}}
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>Price:</b>
+                                                                                                {{rowData.price}}
+                                                                                        </div>
+                                                                                        <div class="ui-g-12">
+                                                                                                <b>Reach Destination
+                                                                                                        By:</b>
+                                                                                                {{rowData.reachDestination}}
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="ui-g-12 ui-md-2">
+                                                                                <button type="button"
+                                                                                        [disabled]="!rowData.ableToBook"
+                                                                                        (click)="showSeats(rowData)"
+                                                                                        pButton icon="pi pi-info-circle"
+                                                                                        label="Show Seats"></button>
+                                                                        </div>
+                                                                </div>
+                                                        </td>
+                                                </tr>
+                                        </ng-template>
+                                </p-table>
+
+
+                                <!-- ===================================================== -->
+                        </div>
+                        <ng-template #Else>
+                                No flights found based on search category
+                        </ng-template>
+                        <button mat-raised-button color="warn" (click)="backToSearchPage()">Back</button>
+
+                </form>
+        </mat-step>
+        <mat-step>
+                <ng-template matStepLabel>Seats</ng-template>
+                <div class="horizontal" *ngFor="let seat of seatsToDisplay; let i = index">
+                        <div *ngIf="i%6==0">
+                                <br />
+                        </div>
+
+                        <label class="ui-md-2 ui-lg-2 ui-sm-12 paddingRight">{{seat}}
+
+                                <input type="checkbox" (change)="AddSeat($event)" class="example-margin paddingRight"
+                                        id="{{seat}}" name="{{seat}}"><img id="img{{seat}}"
+                                        src="../assets/img/bseat.png" alt=""></label>
+                </div>
+                <br />
+
+                <div class="ui-g">
+                        <button mat-raised-button (click)="moveBackToFlights()">Back</button>
+                        <button mat-raised-button color="primary" (click)="confirmJourney()">Continue</button>
+                </div>
+        </mat-step>
+        <mat-step>
+                <ng-template matStepLabel>Passenger Details</ng-template>
+                <div class="ui-g">
+                      
+                                <form [formGroup]="passengersDetails">
+                                        <div formArrayName="detailsArray">
+                                                <div *ngFor="let arrayItem of passengerDetailsForms.controls; let i=index"
+                                                        [formGroupName]="i">
+                                                        <strong>Enter the details of person {{i+1}}</strong>
+                                                        <div class="ui-g">
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Full Name
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="personName"
+                                                                                        placeholder="Full Name">
+                                                                        </div>
+                                                                </div>
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Age
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="personAge"
+                                                                                        type="number" min="1" max="120"
+                                                                                        placeholder="Age">
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <!-- ============================== Second Row======================== -->
+                                                        <div class="ui-g">
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Mobile Number
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="mobileNumber"
+                                                                                        type="number"
+                                                                                        placeholder="Mobile Number">
+                                                                        </div>
+                                                                </div>
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Gender
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <mat-form-field>
+                                                                                        <mat-label>Gender</mat-label>
+                                                                                        <mat-select
+                                                                                                formControlName="gender">
+                                                                                                <mat-option
+                                                                                                        *ngFor="let gend of genders"
+                                                                                                        [value]="gend">
+                                                                                                        {{gend}}
+                                                                                                </mat-option>
+                                                                                        </mat-select>
+                                                                                </mat-form-field>
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <!-- ============================== Third Row======================== -->
+                                                        <div class="ui-g">
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Email Address
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="email"
+                                                                                        placeholder="Email Address">
+                                                                        </div>
+                                                                </div>
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Address
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="address"
+                                                                                        placeholder="Address">
+                                                                        </div>
+                                                                </div>
+                                                        </div>
+                                                        <div class="ui-g">
+                                                                <div class="ui-g-12 ui-md-6">
+                                                                        <div class="ui-g-4">
+                                                                                Aadhar Number
+                                                                        </div>
+                                                                        <div class="ui-g-8">
+                                                                                <input pInputText
+                                                                                        formControlName="aadharNumber"
+                                                                                        placeholder="Enter AadharNumber">
+                                                                        </div>
+                                                                </div>
+
+                                                        </div>
+                                                </div>
+                                        </div>
+                                </form>
+                        
+                     
+                                <div class="ui-g">
+                                        <div class="ui-g-12 ui-md-12" *ngIf="boolinfantRequired">
+                                                <div class="ui-g-4">
+                                                        Infant Required
+                                                </div>
+                                                <div class="ui-g-8">
+                                                                <mat-checkbox class="example-margin"  [formControl]="infantRequired"></mat-checkbox>
+                                                </div>
+                                        </div>
+                                        <div class="ui-g-12 ui-md-12" *ngIf="boolFoodRequired">
+                                                <div class="ui-g-4">
+                                                        Food Required
+                                                </div>
+                                                <div class="ui-g-8">
+                                                                <mat-checkbox class="example-margin"  [formControl]="foodRequired"></mat-checkbox>
+                                                </div>
+                                        </div>
+                                        <div class="ui-g-12 ui-md-12" *ngIf="boolChairRequired">
+                                                <div class="ui-g-4">
+                                                        WheelChair Required
+                                                </div>
+                                                <div class="ui-g-8">
+                                                                <mat-checkbox class="example-margin" [formControl]="wheelChairRequired"></mat-checkbox>
+                                                </div>
+                                        </div>
+                                </div>
+                      
+                </div>
+                <br />
+                <hr>
+                <div class="ui-g">
+                        <button mat-raised-button (click)="moveBackToFlightsSeatsSelection()">Back</button>
+                        <button mat-raised-button [disabled]="!passengersDetails.valid" color="primary"
+                                (click)="finishBooking()">Continue</button>
+                </div>
+        </mat-step>
+</mat-horizontal-stepper>

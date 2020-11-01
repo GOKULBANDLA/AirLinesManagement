@@ -1,0 +1,124 @@
+  <mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="flightInput">
+        <form [formGroup]="flightInput" class="text-center" >
+                <ng-template matStepLabel>Fill out flight details</ng-template>
+            <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6">
+                        <div class="ui-g-4">
+                           FlightNumber
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText type="text" placeholder="Flight Number" formControlName="flightnumber"/>
+                        </div>
+                    </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-4">
+                       Flight Name
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText type="text" placeholder="Flight Name" formControlName="flightname"/>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-4">
+                       Flight Origin
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText type="text" placeholder="Flight Origin" formControlName="flightorigin"/>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-4">
+                       Flight Destination
+                    </div>
+                    <div class="ui-g-8">
+                        <input pInputText type="text" placeholder="Flight Destination" formControlName="flightdest"/>
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6">
+                        <div class="ui-g-4">
+                           Flight Time
+                        </div>
+                        <div class="ui-g-8">
+                            <input pInputText type="time" placeholder="Flight Time" formControlName="flighttime"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-4">
+                               Reach Time
+                            </div>
+                            <div class="ui-g-8">
+                                <input pInputText type="time" placeholder="Reach Time" formControlName="reachtime"/>
+                            </div>
+                        </div>
+                </div>
+                <div class="ui-g">
+                        <div class="ui-g-12 ui-md-6">
+                            <div class="ui-g-4">
+                               Price
+                            </div>
+                            <div class="ui-g-8">
+                                <input pInputText type="number" placeholder="Price" formControlName="flightprice"/>
+                            </div>
+                        </div>
+                </div>
+            <button mat-button matStepperNext  [disabled]="!flightInput.valid">Next</button>
+            </form>
+    </mat-step>
+    <mat-step [stepControl]="facilitiesFormGroup">
+      <form [formGroup]="facilitiesFormGroup">
+            <ng-template matStepLabel>Ancillary services</ng-template>
+            <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6">
+                        <div class="ui-g-4">
+                           Food provision
+                        </div>
+                        <div class="ui-g-8">
+                                <mat-checkbox value="false" name="food"  formControlName="food"  ></mat-checkbox>
+                        </div>
+                    </div>
+            </div>
+            <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6">
+                        <div class="ui-g-4">
+                          Infant Allow
+                        </div>
+                        <div class="ui-g-8">
+                                <mat-checkbox value="false" name="childAllow"  formControlName="childAllow" ></mat-checkbox>
+                        </div>
+                    </div>
+            </div>
+            <div class="ui-g">
+                    <div class="ui-g-12 ui-md-6">
+                        <div class="ui-g-4">
+                          Wheel Chair Provision
+                        </div>
+                        <div class="ui-g-8">
+                                <mat-checkbox value="false" name="wheelChairProvision" formControlName="wheelChairProvision" ></mat-checkbox>
+                        </div>
+                    </div>
+            </div>
+            <button mat-button matStepperPrevious>Back</button>
+            <button mat-button matStepperNext  >Next</button>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+     Click on finish to add details.
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="addFlightDetails()">Finish</button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+

@@ -1,0 +1,118 @@
+<div *ngIf="flights.length==0;else Else">
+No Details available
+</div>
+<ng-template #Else>
+        <p-table  [columns]="cols" [value]="flights" selectionMode="single" [(selection)]="selectedCar" (onRowSelect)="onRowSelect($event)" [paginator]="true" [rows]="15">
+                <ng-template pTemplate="caption">
+                    List of Flights
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                                    {{col.header}} 
+                                    <p-sortIcon [field]="col.field"></p-sortIcon>               
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns">
+                                    {{rowData[col.field]}}
+                        </td>
+                    </tr>
+                </ng-template>  
+            </p-table>
+</ng-template>
+
+   <!-- Dialog box to Edit or Delete Flight Details -->
+   <p-dialog header="Flight Details" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '500px'}">
+        <div class="ui-g ui-fluid" *ngIf="flight">
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="flightnumber">Flight Number</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="flightnumber" [(ngModel)]="flight.flightnumber" />
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="flightname">Name</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="flightname" [(ngModel)]="flight.flightname" />
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="flightorigin">From</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="flightorigin" [(ngModel)]="flight.flightorigin" />
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    <label for="flightdest">To</label>
+                </div>
+                <div class="ui-g-8">
+                    <input pInputText id="flightdest" [(ngModel)]="flight.flightdest" />
+                </div>
+            </div>
+            <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="flighttime">Flight Time</label>
+                    </div>
+                    <div class="ui-g-8">
+                            <input pInputText  id="flighttime" type="time" [(ngModel)]="flight.flighttime"/>
+                    </div>
+                </div>
+                <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="reachtime">Reach Time</label>
+                        </div>
+                        <div class="ui-g-8">
+                                <input pInputText  id="reachtime" type="time" [(ngModel)]="flight.reachtime"/>
+                        </div>
+                </div>
+                <div class="ui-g-12">
+                        <div class="ui-g-4">
+                            <label for="flightprice">Ticket Price</label>
+                        </div>
+                        <div class="ui-g-8">
+                                <input pInputText  id="flightprice" type="number" [min]="1000" [(ngModel)]="flight.flightprice"/>
+                        </div>
+                </div>
+
+            <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="food">Food Provision</label>
+                    </div>
+                    <div class="ui-g-8">
+                            <mat-checkbox id="food" value="flight.food" [(ngModel)]="flight.food" ></mat-checkbox>
+                    </div>
+            </div>
+            <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="childAllow">Child Allowing</label>
+                    </div>
+                    <div class="ui-g-8">
+                            <mat-checkbox id="childAllow" [(ngModel)]="flight.childAllow" ></mat-checkbox>
+                    </div>
+            </div>
+            <div class="ui-g-12">
+                    <div class="ui-g-4">
+                        <label for="wheelChairProvision">Wheel Chair Availability</label>
+                    </div>
+                    <div class="ui-g-8">
+                            <mat-checkbox id="wheelChairProvision"  [(ngModel)]="flight.wheelChairProvision"></mat-checkbox>
+                    </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-close" (click)="delete()" label="Delete"></button>
+                <button type="button" pButton icon="fa fa-check"  (click)="update()" label="Update"></button>
+            </div>
+        </p-footer>
+    </p-dialog>

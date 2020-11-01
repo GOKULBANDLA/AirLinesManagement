@@ -1,0 +1,17 @@
+.horizontal{
+    display:inline;
+    padding-right: 15px;
+}
+.example-margin {
+    margin: 0 10px;
+  }
+.paddingRight{
+    padding-right: 15px;
+} 
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+input[type=checkbox] {
+    display:none;
+}
+

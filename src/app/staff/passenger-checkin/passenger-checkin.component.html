@@ -1,0 +1,101 @@
+<mat-horizontal-stepper [linear]="isLinear" #stepper>
+    <mat-step [stepControl]="passengerSearchForm">
+      <form [formGroup]="passengerSearchForm">
+        <ng-template matStepLabel>Search Passenger</ng-template>
+        <div class="ui-g">
+            <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-5">
+                            From
+                    </div>
+                    <div class="ui-g-7">
+                            <mat-form-field>
+                                    <mat-label>Origin City</mat-label>
+                                    <mat-select formControlName="origin">
+                                            <mat-option *ngFor="let city of flights"
+                                                    [value]="city.flightorigin">
+                                                    {{city.flightorigin}}
+                                            </mat-option>
+                                    </mat-select>
+                            </mat-form-field>
+
+                    </div>
+            </div>
+    </div>
+    <div class="ui-g">
+            <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-5">
+                            To
+                    </div>
+                    <div class="ui-g-7">
+                            <mat-form-field>
+                                    <mat-label>Destination City</mat-label>
+                                    <mat-select formControlName="dest">
+                                            <mat-option *ngFor="let city of flights"
+                                                    [value]="city.flightdest">
+                                                    {{city.flightdest}}
+                                            </mat-option>
+                                    </mat-select>
+                            </mat-form-field>
+                    </div>
+            </div>
+    </div>
+    <div class="ui-g">
+            <div class="ui-g-12 ui-md-6">
+                    <div class="ui-g-5">
+                            Date of Boarding
+                    </div>
+                    <div class="ui-g-7">
+                            <p-calendar [touchUI]="true" [readonlyInput]="true"
+                                    formControlName="date" dateFormat="dd/mm/yy" [minDate]="minDate"
+                                    [maxDate]="maxDate" showButtonBar="true">
+                            </p-calendar>
+                    </div>
+            </div>
+    </div>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-6">
+                <div class="ui-g-5">
+        <button pButton type="button" label="Search" [disabled]="!passengerSearchForm.valid" (click)="searchpassengersToCheckIn(stepper)"></button>
+                </div>
+        </div>
+    </div>
+      </form>
+    </mat-step>
+    <mat-step >
+            <ng-template matStepLabel>Details</ng-template>
+            <p-table #dt [columns]="cols" [value]="passengersBookedTickets" [responsive]="true" [paginator]="true" [rows]="10" [resizableColumns]="true">
+                   
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pResizableColumn>
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th *ngFor="let col of columns" [ngSwitch]="col.field">
+                                <input pInputText type="text"  (input)="dt.filter($event.target.value, col.field, 'contains')">
+                            </th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td *ngFor="let col of columns" class="ui-resizable-column">
+                                 <div *ngIf="col.field=='checkedin'">
+                                <button pButton type="button" [disabled]="rowData.checkedin" (click)="CheckIn(rowData)" label="CheckIn" ></button>
+                                 </div>
+                                 <div *ngIf="col.field!='checkedin'">   
+                                {{rowData[col.field]}}
+                                 </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <div>
+                        <button pButton type="button" (click)="moveBackToSearchPage()" label="Back" ></button>
+                </div>
+    </mat-step>
+    
+  </mat-horizontal-stepper>
+<!-- 
+ -->

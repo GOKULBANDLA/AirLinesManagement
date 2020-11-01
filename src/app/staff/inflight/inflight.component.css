@@ -1,0 +1,21 @@
+.horizontal{
+    display:inline;
+    padding-right: 15px;
+}
+.example-margin {
+    margin: 0 10px;
+  }
+.paddingRight{
+    padding-right: 15px;
+} 
+::ng-deep .mat-horizontal-stepper-header{
+    pointer-events: none !important;
+}
+input[type=button] {
+    display:none;
+}
+.text-danger{
+color: red;
+font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+
+}
